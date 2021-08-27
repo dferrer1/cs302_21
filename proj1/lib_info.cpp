@@ -30,4 +30,106 @@ Description: This is the main file for the first project that I had to do for CS
 							4. Down In Brazil: 6:07
 							6. Naima: 7:49
 */
-#include "mixtape_utils.h"
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <map>
+using namespace std;
+
+// Provided by Dr. Emrich
+struct Song {
+    string title;
+    int time;  // could also be a string
+    int track;
+};
+
+struct Album {
+    map <int, Song > songs;
+    string name;
+    int time;
+    int nsongs;  // optional variable but makes it easier
+};
+
+struct Artist {
+    map <string, Album > albums;
+    string name;
+    int time;
+    int nsongs;
+};
+//
+
+struct Mixtape {
+    map <string, Artist > artists;
+    string title;
+    int nartists;
+
+	// Add_Song: no return
+	//			 takes the name of the song, song running time, the artist's name, the album title, and the track of the album its in
+	//			 declares and builds a Song object; checks if the artist already exists in the Mixtape;
+	//														if yes:
+	//															checks if the album exists in the Artist;
+	//																if yes:
+	//																	| adds the song object to the Album,
+	//																	| increments the Album song count,
+	//																	| updates the Album song time,
+	//																	| increments the Artist song count,
+	//																	| updates the Artist song time
+	//																if no:
+	//																	| calls Add_Album
+	//																	| adds the song object to the Album,
+	//																	| increments the Album song count,
+	//																	| updates the Album song time,
+	//																	| increments the Artist song count,
+	//																	| updates the Artist song time
+	//														if no:
+	//															| calls Add_Artist
+	//															| calls Add_Album
+	//															| adds the song object to the Album,
+	//															| increments the Album song count,
+	//															| updates the Album song time,
+	//															| increments the Artist song count,
+	//															| updates the Artist song time
+	void Add_Song(string song_name, int song_time, string artist_name, string album_title, int track);
+	
+	// Add_Album: no return
+	//			  
+	void Add_Album(string fsong, string album_title, int fsong_time);
+	
+	// Add_Artist: no return
+	//			   takes the name of the artist and the Artist struct
+	void Add_Artist(string fartist, string artist_name, int fsong_time);
+	
+	// print song
+	// print album
+	// print artist
+	// print mixtape
+};
+
+int main(int argc, char* argv[]) {
+	// variable library
+	ifstream fin;
+	string entry;
+	
+	//
+	Mixtape cool_mixtape;
+	
+
+	// read data
+	//// read file name from command line
+	
+	//// open file
+	//// read file into stringstreams using getline in a while loop
+	while(getline(fin, entry)) {
+		stringstream ess(entry);
+		
+	}
+	////// 
+
+	// print formatted data
+
+
+} // end of main
+
+// Add_Song: called to add a song to an existing album
+void Mixtape::Add_Song(string title, int time, string artist, string album, int track) {
+} // end of Add_Song
