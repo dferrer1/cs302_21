@@ -83,7 +83,7 @@ struct Mixtape {
 	//			 updates the Album song time,
 	//			 increments the Artist song count,
 	//			 updates the Artist song time
-	void Add_Song(string song_name, string song_time, string artist_name, string album_title, string track);
+	void Add_Song(string song_name, int song_time, string artist_name, string album_title, int track);
 	
 	// Song Add_Song
 
@@ -109,13 +109,14 @@ int main(int argc, char* argv[]) {
 	Mixtape cool_mixtape;
 	ifstream fin;
 	string entry;
+	int stime;
 	
 	string title;
 	string time;
 	string artist;
 	string album;
 	string genre;
-	string track;
+	int track;
 
 	// read data
 	//// read and open file name from command line
@@ -134,11 +135,14 @@ int main(int argc, char* argv[]) {
 		artist = remove_underscore(artist);
 		album = remove_underscore(album);
 
+		// caculate time in seconds
+		stime = (stoi(time.substr(0, 1)) * 60) + stoi(time.substr(2, 2));
+
 		// debug entry
-		printf("Debug entry: %s %s %s %s %s %s\n", title.c_str(), time.c_str(), artist.c_str(), album.c_str(), genre.c_str(), track.c_str());
+		printf("Debug entry: %s %s %s %s %s %d; %d\n", title.c_str(), time.c_str(), artist.c_str(), album.c_str(), genre.c_str(), track, stime);
 		
 		// call Add_Song
-		cool_mixtape.Add_Song(title, time, artist, album, track);
+		cool_mixtape.Add_Song(title, stime, artist, album, track);
 		
 	} // end of input while loop
 
@@ -163,6 +167,40 @@ string remove_underscore(string a) {
 } // end of remove_underscore
 
 
-void Mixtape::Add_Song(string title, string time, string artist, string album, string track) {
-	
+	// Create_Song: no return; takes the name of the song, song running time, the artist's name, the album title, and the track of the album its in
+	//			 declares and builds a Song object; 
+	//			 checks if the artist already exists in the Mixtape;
+	//				if yes:
+	//					checks if the album exists in the Artist;
+	//						if yes:
+	//							| saves the location of the album
+	//						if no:
+	//							| calls Add_Album
+	//							| saves the location of the new album
+	//				if no:
+	//					| calls Add_Artist
+	//					| calls Add_Album
+	//			 	
+	//			 adds the song object to the Album,
+	//			 increments the Album song count,
+	//			 updates the Album song time,
+	//			 increments the Artist song count,
+	//			 updates the Artist song time
+void Mixtape::Add_Song(string title, int time, string artist, string album, int track) {
+	Song nsong;
+	map<string, Artist>::iterator ait;
+
+	// instantiate new_song parameters
+	nsong.title = title;
+	nsong.time = time;
+	nsong.track = track;
+
+	// search for the artist
+	ait = this->artists.find(artist);
+	if (ait != this->artists.end()) {
+		
+		// 
+
+	}
+
 } // end of Add_Song
