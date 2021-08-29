@@ -105,19 +105,26 @@ struct Mixtape {
 string remove_underscore(string a);
 
 int main(int argc, char* argv[]) {
-	// variable library
-	Mixtape cool_mixtape;
+	//// variable library
+	// general
+	map <string, Artist> cool_mixtape;
 	ifstream fin;
 	string entry;
 	int stime;
 	
+	// entry variables
 	string title;
-	string time;
+	string time, min, sec;
 	string artist;
 	string album;
 	string genre;
 	int track;
 
+	// map iterators
+	map<string, Artist>::iterator arit; // used to iterate through artists map (cool_mixtape)
+	map<string, Album>::iterator alit; // used to iterate through albums map
+	map<int, Song>::iterator sit; //used to iterate through songs map
+	
 	// read data
 	//// read and open file name from command line
 	string file = argv[1];
@@ -126,6 +133,11 @@ int main(int argc, char* argv[]) {
 	//// read file into stringstreams using getline in a while loop
 	while(getline(fin, entry)) {
 		stringstream ess(entry);
+		
+		// empty struct variables
+		Song nsong;
+		Album nalbum;
+		Artist nartist;
 		
 		// parse entry
 		ess >> title >> time >> artist >> album >> genre >> track;
@@ -136,20 +148,82 @@ int main(int argc, char* argv[]) {
 		album = remove_underscore(album);
 
 		// caculate time in seconds
-		stime = (stoi(time.substr(0, 1)) * 60) + stoi(time.substr(2, 2));
+		min = time.substr(0, time.find(':'));
+		stime = (stoi(time.substr(0, time.find(':'))) * 60) + stoi(time.substr(time.find(':') + 1, 2));
 
 		// debug entry
-		printf("Debug entry: %s %s %s %s %s %d; %d\n", title.c_str(), time.c_str(), artist.c_str(), album.c_str(), genre.c_str(), track, stime);
+		//printf("Debug entry: %s %s %s %s %s %d; %d\n", title.c_str(), time.c_str(), artist.c_str(), album.c_str(), genre.c_str(), track, stime);
 		
-		// call Add_Song
-		cool_mixtape.Add_Song(title, stime, artist, album, track);
+		// instantiate new_song parameters
+		nsong.title = title;
+		nsong.time = stime;
+		nsong.track = track;
+
+		// search for the artist
+		arit = cool_mixtape.find(artist);
+		if (arit != cool_mixtape.end()) {
 		
+			// artist exists, check for album
+			alit = arit->second.albums.find(album);
+			if (alit != arit->second.albums.end()) {
+				
+				// album exists, insert song in album
+				alit->second.songs.insert(pair<int, Song>(track, nsong));
+
+				// update album values
+				alit->second.nsongs++;
+				alit->second.time += stime;
+				
+				// update artist values
+				arit->second.nsongs++;
+				arit->second.time += stime;
+			
+			// the artist exists, but the album doesn't so create a new album, add the song, and add the album to the artist
+			} else {
+				
+				// create new album and insert new song
+				nalbum.name = album;
+				nalbum.time = stime;
+				nalbum.nsongs = 1;
+				nalbum.songs.insert(pair<int, Song>(track, nsong));
+
+				// add the album to the pre-existing artist, update artist values
+				arit->second.albums.insert(pair<string, Album>(album, nalbum));
+				arit->second.nsongs++;
+				arit->second.time += stime;
+			}
+
+		// neither the artist or the album exist, so create both and add the new song
+		} else {
+				// create new album and insert new song
+				nalbum.name = album;
+				nalbum.time = stime;
+				nalbum.nsongs = 1;
+				nalbum.songs.insert(pair<int, Song>(track, nsong));
+		
+				// create new artist and insert new album
+				nartist.name = artist;
+				nartist.time = stime;
+				nartist.nsongs = 1;
+				nartist.albums.insert(pair<string, Album>(album, nalbum));
+
+				// insert new artist in cool_mixtape
+				cool_mixtape.insert(pair<string, Artist>(artist, nartist));
+		}
 	} // end of input while loop
 
 	////// 
 
 	// print formatted data
-
+	for (arit = cool_mixtape.begin(); arit != cool_mixtape.end(); ++arit) {
+		printf("%s: %d, %d:%02d\n", arit->second.name.c_str(), arit->second.nsongs, (arit->second.time / 60), (arit->second.time % 60));
+		for (alit = arit->second.albums.begin(); alit != arit->second.albums.end(); ++alit) {
+			printf("        %s: %d, %d:%02d\n", alit->second.name.c_str(), alit->second.nsongs, (alit->second.time / 60), (alit->second.time % 60));
+			for (sit = alit->second.songs.begin(); sit != alit->second.songs.end(); ++sit) {
+				printf("                %d. %s: %d:%02d\n", sit->second.track, sit->second.title.c_str(), (sit->second.time / 60), (sit->second.time % 60));
+			} // end of song iterator for loop
+		} // end of album iterator for loop
+	} // end of artist for loop
 
 } // end of main
 
@@ -188,7 +262,9 @@ string remove_underscore(string a) {
 	//			 updates the Artist song time
 void Mixtape::Add_Song(string title, int time, string artist, string album, int track) {
 	Song nsong;
-	map<string, Artist>::iterator ait;
+	map<string, Artist>::iterator arit;
+	map<string, Album>::iterator alit;
+	map<string, Song>::iterator sit;
 
 	// instantiate new_song parameters
 	nsong.title = title;
@@ -196,11 +272,13 @@ void Mixtape::Add_Song(string title, int time, string artist, string album, int 
 	nsong.track = track;
 
 	// search for the artist
-	ait = this->artists.find(artist);
-	if (ait != this->artists.end()) {
-		
+	//arit = this->artists.find(artist);
+	//if (arit != this->artists.end()) {
 		// 
+		//alit = arit->first.find(album);
 
-	}
+	//} else {
+		
+	//}
 
 } // end of Add_Song
