@@ -2,25 +2,39 @@
 // Author: Diego Ferrer
 // Dates: 9/13 - 9/
 
-#include <vector>
+#include <iostream>
+#include <unordered_set>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
 // is_palindrome prototype
-bool is_palindrome(string s);
+void is_palindrome(string s);
 
 int main(int argc, char *argv[]) {
-	vector<string> isv;
-	vector<string> pv;
+	unordered_set<string> ius;
+	unordered_set<string>::iterator iusi;
+	string input;
 	// // Read in input
-	// // Check if input strings are palindromes
-	// // Output all palindromes
+	// read all phrases from standard input, store them in unordered_set
+    while (getline(cin, input)) {
+		ius.insert(input);
+	}
+
+	//DEBUG CHUNK: Check input unordered_set
+	for (iusi = ius.begin(); iusi != ius.end(); iusi++) {
+		cout << (*iusi) << endl;
+	}
+	
+
 	return (0);
 } // end of main
 
 // is_palindrome:	takes in a string, outputs a bool
 //					checks if the input string is a palindrome
-bool is_palindrome(string s) {
-	return false;
+//					couts result
+void is_palindrome(string s) {
+	// // Check if input strings are palindromes
+	// // Output all results
 } // end of is_palindrome
