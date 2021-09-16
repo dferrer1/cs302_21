@@ -14,16 +14,18 @@ void is_palindrome(string s);
 
 int main(int argc, char *argv[]) {
 	unordered_set<string> ius;
-	unordered_set<string>::iterator iusi;
 	string input;
 	// // Read in input
 	// read all phrases from standard input, store them in unordered_set
     while (getline(cin, input)) {
 		ius.insert(input);
 	}
-
-	//DEBUG CHUNK: Check input unordered_set
+	
+	// access each key and check if its a palindrome
+	unordered_set<string>::iterator iusi;
 	for (iusi = ius.begin(); iusi != ius.end(); iusi++) {
+		is_palindrome((*iusi));
+		//DEBUG: Check input unordered_set
 		cout << (*iusi) << endl;
 	}
 	
@@ -37,4 +39,5 @@ int main(int argc, char *argv[]) {
 void is_palindrome(string s) {
 	// // Check if input strings are palindromes
 	// // Output all results
+	
 } // end of is_palindrome
