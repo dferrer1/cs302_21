@@ -36,14 +36,14 @@ int main(int argc, char *argv[]) {
 	return (0);
 } // end of main
 
-// is_palindrome:	takes in a string, outputs a bool
+// is_palindrome:	takes in a string, returns nothing
 //					checks if the input string is a palindrome
 //					couts result
 void is_palindrome(string s) {
 	unordered_map<char, int> charc;
 	//unordered_map<char, int>::iterator charcit;
 	//const auto& charcit;
-	bool palindrome = false;
+	int palindrome = 0;
 
 	// // Check if input strings are palindromes
 	// count each character instance in s
@@ -58,16 +58,24 @@ void is_palindrome(string s) {
 	}
 
 	//DEBUG CHUNK
+	/*
 	cout << s << " values: \n	";
 	for (const auto& charcit : charc) {
 		cout << charcit.first << " " << charcit.second << ", ";
 	}
 	cout << endl;
+	*/
 
-	// // Output all results
-	if (palindrome) {
-		//cout << "\"" << s << "\" is a palindrome permutation" << endl;
+	for (const auto& charcit : charc) {
+		if ((charcit.second % 2) == 1) {
+			palindrome++;
+		}
+	}
+
+	// // Output results
+	if (palindrome < 2) {
+		cout << "\"" << s << "\" is a palindrome permutation" << endl;
 	} else {
-		//cout << "\"" << s << "\" is not a palindrome permutation" << endl;
+		cout << "\"" << s << "\" is not a palindrome permutation" << endl;
 	}
 } // end of is_palindrome
