@@ -1,12 +1,13 @@
-// Challenge 06: Palindrome Permutation
+// Challenge 03: Palindrome Permutation
 // Author: Diego Ferrer
 // Dates: 9/13 - 9/17
+// Description: This challenge involves taking in strings from standard input and checking if they are palindromes. My code
+//				implements this by taking in strings using getline and calling is_palindrome(), a function a created 
+//				described below, on them.
 
 #include <iostream>
-#include <unordered_set>
 #include <unordered_map>
 #include <string>
-#include <sstream>
 
 using namespace std;
 
@@ -14,35 +15,22 @@ using namespace std;
 void is_palindrome(string s);
 
 int main(int argc, char *argv[]) {
-	//unordered_set<string> ius;
 	string input;
+	
 	// // Read in input
 	// read all phrases from standard input, store them in unordered_set
     while (getline(cin, input)) {
-		//ius.insert(input);
 		is_palindrome(input);
 	}
 	
-	/*
-	// access each key and check if its a palindrome
-	unordered_set<string>::iterator iusi;
-	for (iusi = ius.begin(); iusi != ius.end(); iusi++) {
-		//is_palindrome((*iusi));
-		//DEBUG: Check input unordered_set
-		cout << (*iusi) << endl;
-	}
-	*/
-
 	return (0);
 } // end of main
 
 // is_palindrome:	takes in a string, returns nothing
-//					checks if the input string is a palindrome
+//					checks if the input string (storing all characters and their count in a map) is a palindrome
 //					couts result
 void is_palindrome(string s) {
 	unordered_map<char, int> charc;
-	//unordered_map<char, int>::iterator charcit;
-	//const auto& charcit;
 	int palindrome = 0;
 
 	// // Check if input strings are palindromes
@@ -57,15 +45,7 @@ void is_palindrome(string s) {
 		}
 	}
 
-	//DEBUG CHUNK
-	/*
-	cout << s << " values: \n	";
-	for (const auto& charcit : charc) {
-		cout << charcit.first << " " << charcit.second << ", ";
-	}
-	cout << endl;
-	*/
-
+	// count non-even-repeating characters
 	for (const auto& charcit : charc) {
 		if ((charcit.second % 2) == 1) {
 			palindrome++;
