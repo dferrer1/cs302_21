@@ -49,7 +49,9 @@ void is_palindrome(string s) {
 	// count each character instance in s
 	for (int i = 0; i < int(s.size()); i++) {
 		if (charc.find(s[i]) == charc.end()) {
-			charc.insert({s[i], 1});
+			if (s[i] >= 'a' && s[i] <= 'z') {
+				charc.insert({s[i], 1});
+			}
 		} else {
 			charc.at(s[i])++;
 		}
