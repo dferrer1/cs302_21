@@ -1,11 +1,13 @@
-// Challenge 06: Palindrome Permutation
+// Challenge 03: Palindrome Permutation
 // Author: Diego Ferrer
-// Dates: 9/13 - 9/
+// Dates: 9/13 - 9/17
+// Description: This challenge involves taking in strings from standard input and checking if they are palindromes. My code
+//				implements this by taking in strings using getline and calling is_palindrome(), a function a created 
+//				described below, on them.
 
 #include <iostream>
-#include <unordered_set>
+#include <unordered_map>
 #include <string>
-#include <sstream>
 
 using namespace std;
 
@@ -13,31 +15,47 @@ using namespace std;
 void is_palindrome(string s);
 
 int main(int argc, char *argv[]) {
-	unordered_set<string> ius;
 	string input;
+	
 	// // Read in input
 	// read all phrases from standard input, store them in unordered_set
     while (getline(cin, input)) {
-		ius.insert(input);
+		is_palindrome(input);
 	}
 	
-	// access each key and check if its a palindrome
-	unordered_set<string>::iterator iusi;
-	for (iusi = ius.begin(); iusi != ius.end(); iusi++) {
-		is_palindrome((*iusi));
-		//DEBUG: Check input unordered_set
-		cout << (*iusi) << endl;
-	}
-	
-
 	return (0);
 } // end of main
 
-// is_palindrome:	takes in a string, outputs a bool
-//					checks if the input string is a palindrome
+// is_palindrome:	takes in a string, returns nothing
+//					checks if the input string (storing all characters and their count in a map) is a palindrome
 //					couts result
 void is_palindrome(string s) {
+	unordered_map<char, int> charc;
+	int palindrome = 0;
+
 	// // Check if input strings are palindromes
-	// // Output all results
-	
+	// count each character instance in s
+	for (int i = 0; i < int(s.size()); i++) {
+		if (charc.find(s[i]) == charc.end()) {
+			if (s[i] >= 'a' && s[i] <= 'z') {
+				charc.insert({s[i], 1});
+			}
+		} else {
+			charc.at(s[i])++;
+		}
+	}
+
+	// count non-even-repeating characters
+	for (const auto& charcit : charc) {
+		if ((charcit.second % 2) == 1) {
+			palindrome++;
+		}
+	}
+
+	// // Output results
+	if (palindrome < 2) {
+		cout << "\"" << s << "\" is a palindrome permutation" << endl;
+	} else {
+		cout << "\"" << s << "\" is not a palindrome permutation" << endl;
+	}
 } // end of is_palindrome
