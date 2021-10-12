@@ -45,7 +45,8 @@ int main(int argc, char *argv[]) {
 	// while(getline(cin, nvertices)) {
 	
 	while(cin >> nvert)	{
-		vector<pair<int,int>> aMST;
+		multimap<int,int> aMST; // final MST; update as you go through the multimap
+		//vector<pair<int,int>> aMST;
 		// DEBUG: loop check
 		//cout << "LOOP: " << gnum << endl;
 
@@ -132,8 +133,8 @@ int main(int argc, char *argv[]) {
 				//printf("adding {%d, %d} to MST \n", cnode, nnode);
 				
 				// add the smallest edge adjacent to the current node to the MST
-				//aMST.insert({cnode, nnode});
-				aMST.push_back({cnode, nnode});
+				aMST.insert({cnode, nnode});
+				//aMST.push_back({cnode, nnode});
 
 				// add the weight to total weight
 				total_weight += weight;
@@ -155,17 +156,27 @@ int main(int argc, char *argv[]) {
 		}
 
 		//DEBUG: check all edges added to MST !!!
-		for (size_t i = 0; i < aMST.size(); i++) {
+		//for (size_t i = 0; i < aMST.size(); i++) {
 			//printf("First Node: %d; Second Node: %d\n", aMST[i].first, aMST[i].second);
-		}
+		//}
 
 		//// output
 		// print the total weight
 		printf("%d\n", total_weight);
+		
 		// print each path
+		//for (int i = 0; i < aMST.size(); i++) {
+		for (multimap<int,int>::iterator msti = aMST.begin(); msti != aMST.end(); msti++) {
+			
+			printf("%c%c\n", char(msti->first+65), char(msti->second+65));
+				
+		}
+		//}
+		/*
 		for (size_t i = 0; i < aMST.size(); i++) {
 			printf("%c%c\n", char(aMST[i].first+65), char(aMST[i].second+65));
 		}
+		*/
 
 		/*
 		//DEBUG: check all edges added to MST
