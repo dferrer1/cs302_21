@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 	// while(getline(cin, nvertices)) {
 	
 	while(cin >> nvert)	{
-		multimap<int,int> aMST; // final MST; update as you go through the multimap
+		map<int,set<int>> aMST; // final MST; update as you go through the multimap
 		//vector<pair<int,int>> aMST;
 		// DEBUG: loop check
 		//cout << "LOOP: " << gnum << endl;
@@ -132,8 +132,26 @@ int main(int argc, char *argv[]) {
 				//DEBUG: check MST adds !!!
 				//printf("adding {%d, %d} to MST \n", cnode, nnode);
 				
-				// add the smallest edge adjacent to the current node to the MST
-				aMST.insert({cnode, nnode});
+				// add the smallest edge adjacent to the current node to the MST in the right order
+				if (cnode < nnode) {
+					if (aMST.find(cnode) == aMST.end()) {
+						set<int> nset;
+						nset.insert(nnode);
+						aMST.insert({cnode, nset});
+						//printf("inserting new node: %d\n",cnode);
+					} else {
+						aMST.at(cnode).insert(nnode);
+					}
+				} else {
+					if (aMST.find(nnode) == aMST.end()) {
+						set<int> nset;
+						nset.insert(cnode);
+						aMST.insert({nnode, nset});
+						//printf("inserting new node: %d\n",nnode);
+					} else {
+						aMST.at(nnode).insert(cnode);
+					}
+				}
 				//aMST.push_back({cnode, nnode});
 
 				// add the weight to total weight
@@ -165,13 +183,15 @@ int main(int argc, char *argv[]) {
 		printf("%d\n", total_weight);
 		
 		// print each path
-		//for (int i = 0; i < aMST.size(); i++) {
-		for (multimap<int,int>::iterator msti = aMST.begin(); msti != aMST.end(); msti++) {
-			
-			printf("%c%c\n", char(msti->first+65), char(msti->second+65));
-				
-		}
+		for (int i = 0; i <= aMST.size(); i++) {
+		//for (map<int,set<int>>::iterator msti = aMST.begin(); msti != aMST.end(); msti++) {
+			if (aMST.find(i) != aMST.end()) {
+				for (set<int>::iterator si = aMST.at(i).begin(); si != aMST.at(i).end(); si++) {
+					printf("%c%c\n", char(i+65), char((*si)+65));
+				}
+			}
 		//}
+		}
 		/*
 		for (size_t i = 0; i < aMST.size(); i++) {
 			printf("%c%c\n", char(aMST[i].first+65), char(aMST[i].second+65));
