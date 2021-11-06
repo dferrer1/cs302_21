@@ -1,5 +1,6 @@
 // Author: Diego Ferrer
 // Challenge 09: sequence alignment
+// Overview: Takes in two sequences and uses Needleman-Wunsch to calculate their alignment scores 
 
 #include <iostream>
 #include <vector>
@@ -21,16 +22,9 @@ int main(int argc, char *argv[]) {
 	s1.insert(0, "~");
 	s2.insert(0, "~");
 
-	//DEBUG: check input
-	//cout << s1 << endl << s2 << endl;
-
 	// resize grid to the proper size (M+1)*(N+1)
 	grid.resize(s1.size() * s2.size());
 
-	//DEBUG
-	//cout << grid.size() << endl;
-
-	
 	// initialize values
 	c = s1.size();
 	r = s2.size();
@@ -42,9 +36,6 @@ int main(int argc, char *argv[]) {
 		grid[i] = grid[i-c] - 1;
 	}
 
-	//DEBUG
-	//cout << "!!!" << endl;
-	
 	// loop through and fill all cells
 	for (int i = 1; i < r; i++) {
 		for (int j = 1; j < c; j++) {
@@ -55,19 +46,6 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	
-	//DEBUG
-	//cout << "!!!" << endl;
-	
-	/*
-	//DEBUG: check grid
-	for (int i = 0; i < r; i++) {
-		for (int j = 0; j < c; j++) {
-			cout << grid[i*c + j] << " ";
-		}
-		cout << endl;
-	}
-	*/
-
 	// output score
 	cout << grid[r*c - 1] << endl;
 
@@ -89,4 +67,5 @@ int max(int l, int a, int d) {
 	} else if (d > l && d > a) {
 		return d;
 	}
+	return d;
 }
