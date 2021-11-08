@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 		for (int j = 1; j < c; j++) {
 			left =  grid[i*c + j - 1] - 1;
 			above = grid[(i-1)*c + j] - 1;
-			diag =  grid[(i-1)*c + j- 1] + score(int(s2[i]), int(s1[j]));
+			diag =  grid[(i-1)*c + j- 1] + score(s2[i], s1[j]);
 			grid[i*c + j] = max(left, above, diag);
 		}
 	}
