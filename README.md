@@ -9,5 +9,5 @@ Note these files are a mix of a former class of this instructor at University of
 1. Music Library
 2. Sorting List-Based Strings and Numbers
 3. Superball
-4. Path Finding
+4. Path Finding (Djikstra's)
 5. Letter Dice
